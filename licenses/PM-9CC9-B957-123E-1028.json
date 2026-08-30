@@ -1,0 +1,16 @@
+{
+  "license_version": 2,
+  "device_id": "PM-9CC9-B957-123E-1028",
+  "key_wrap": {
+    "algorithm": "RSA-OAEP",
+    "hash": "SHA-256",
+    "wrapped_key_base64": "TNdh7iqGqBQchwYlr3I21rPpEdfof5BMzb5n+SD4DxRYEefsQKA3ni8ohSQTFg23+tR5/7/Bw37ts9w024uINedPNF883+X9kAkgzp7a8Inn45aJRpuACeOOrMZ3ACVVbqRJS3ZW1lnkX4f4kEY0QGrXoxwapAxPr5+bDhvDhbIYkQ05yvzhPNZWuA6QjFu3K0qesvCjupnb0gydHJDk8VnLvuvWdqolUrUCWeXjbFThg9pKVAuG5WwTDXOANLIvaqEg/er2WhiM5/qgQDQZQnnGe3Wm+YH0w70SsoAAYvawHXj1BOmanJZglL6NKNilBwtRYZjDwqgsVbu9TxkEZg=="
+  },
+  "payload_encryption": {
+    "algorithm": "AES-GCM",
+    "key_bits": 256,
+    "nonce_base64": "LFj8bSCgjxIsM1MV",
+    "aad": "PM-9CC9-B957-123E-1028",
+    "ciphertext_base64": "D24OkUXvm3BZzU1adzOMAW7Yha/umSbY1ZvPk+Jjzt2G1KCEsWc8F9ghwNGCIzfUe8PZouXgfmnjjgL7hPROAumvKY2Pu3uRNhOAzKeFSrDaJw6LM8Y6JJPi27vS+7VuS7DWRlXKc9J5Zw4WTEdbGCVMU3I6v0bF9d5HVO0Zxj1ir/Ql+FXX+axuwbD0MO9vkDErgKMMH25QoqDLxVvfGhzOXuV/VJAYPvamAckDJ3Ud+Y15cL4Ts4ozA8bc/yQnzR13or4wR79wt81HMzDWbbTziw=="
+  }
+}
