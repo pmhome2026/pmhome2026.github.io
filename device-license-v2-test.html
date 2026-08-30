@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PM Knowledge - V2 License 浏览器解密测试</title>
+  <style>
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      margin:0;background:#f5f6f8;color:#1f2328
+    }
+    .wrap{max-width:760px;margin:48px auto;padding:0 20px}
+    .card{
+      background:#fff;border:1px solid #d0d7de;border-radius:12px;
+      padding:28px;box-shadow:0 6px 24px rgba(0,0,0,.06)
+    }
+    h1{margin-top:0;font-size:24px}
+    .muted{color:#656d76;line-height:1.7}
+    .box{
+      margin:16px 0;padding:14px;border-radius:8px;background:#f6f8fa;
+      line-height:1.7
+    }
+    .ok{color:#1a7f37;font-weight:800}
+    .err{color:#cf222e;font-weight:800}
+    code{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      word-break:break-all
+    }
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <section class="card">
+    <h1>PM Knowledge V2 License 浏览器解密测试</h1>
+    <p class="muted">
+      本页会读取当前浏览器 IndexedDB 中保存的不可导出设备私钥，
+      下载该设备自己的公开 License，然后执行 RSA-OAEP + AES-256-GCM 解密。
+      页面不会显示知识库密码明文。
+    </p>
+
+    <div id="result" class="box">正在验证……</div>
+
+    <div class="box">
+      当前浏览器设备码：<br>
+      <code id="deviceId">—</code>
+    </div>
+
+    <div class="box">
+      License 地址：<br>
+      <code id="licenseUrl">—</code>
+    </div>
+  </section>
+</main>
+
+<script>
+(async () => {
+  'use strict';
+
+  const DB_NAME = 'pm-knowledge-device';
+  const DB_VERSION = 1;
+  const STORE_NAME = 'keys';
+  const RECORD_KEY = 'device-keypair-v1';
+
+  const resultEl = document.getElementById('result');
+  const deviceIdEl = document.getElementById('deviceId');
+  const licenseUrlEl = document.getElementById('licenseUrl');
+
+  function openDb() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME);
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function dbGet(key) {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const req = tx.objectStore(STORE_NAME).get(key);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+      tx.oncomplete = () => db.close();
+    });
+  }
+
+  function base64ToBytes(b64) {
+    const bin = atob(b64);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) {
+      out[i] = bin.charCodeAt(i);
+    }
+    return out;
+  }
+
+  function fail(message) {
+    throw new Error(message);
+  }
+
+  try {
+    if (!window.crypto?.subtle || !window.indexedDB) {
+      fail('当前浏览器不支持 Web Crypto 或 IndexedDB。');
+    }
+
+    const record = await dbGet(RECORD_KEY);
+
+    if (!record || !record.privateKey || !record.deviceId) {
+      fail('本浏览器没有设备身份，请先打开 device-test.html 生成设备身份。');
+    }
+
+    deviceIdEl.textContent = record.deviceId;
+
+    const licenseUrl =
+      `./licenses/${encodeURIComponent(record.deviceId)}.json?v=${Date.now()}`;
+
+    licenseUrlEl.textContent =
+      `/licenses/${record.deviceId}.json`;
+
+    const response = await fetch(licenseUrl, {
+      cache: 'no-store'
+    });
+
+    if (response.status === 404) {
+      fail('此设备尚未授权：Public 中没有找到该设备的 License。');
+    }
+
+    if (!response.ok) {
+      fail(`读取 License 失败：HTTP ${response.status}`);
+    }
+
+    const license = await response.json();
+
+    if (license.license_version !== 2) {
+      fail('License 不是 V2 格式。');
+    }
+
+    if (license.device_id !== record.deviceId) {
+      fail('License 设备码与当前浏览器设备码不一致。');
+    }
+
+    if (
+      license.key_wrap?.algorithm !== 'RSA-OAEP' ||
+      license.key_wrap?.hash !== 'SHA-256'
+    ) {
+      fail('License 的 RSA Key Wrap 参数不正确。');
+    }
+
+    if (
+      license.payload_encryption?.algorithm !== 'AES-GCM' ||
+      license.payload_encryption?.key_bits !== 256
+    ) {
+      fail('License 的 AES-GCM 参数不正确。');
+    }
+
+    // 1) 用设备不可导出私钥解开 AES-256 key。
+    const aesRawKey = await crypto.subtle.decrypt(
+      { name: 'RSA-OAEP' },
+      record.privateKey,
+      base64ToBytes(license.key_wrap.wrapped_key_base64)
+    );
+
+    if (aesRawKey.byteLength !== 32) {
+      fail(`解出的 AES Key 长度异常：${aesRawKey.byteLength} bytes`);
+    }
+
+    // 2) 将 AES Key 导入为不可导出 CryptoKey。
+    const aesKey = await crypto.subtle.importKey(
+      'raw',
+      aesRawKey,
+      { name: 'AES-GCM' },
+      false,
+      ['decrypt']
+    );
+
+    // 3) 用 AES-GCM 解开 License payload。
+    const nonce = base64ToBytes(
+      license.payload_encryption.nonce_base64
+    );
+
+    const aadText = license.payload_encryption.aad;
+
+    if (aadText !== record.deviceId) {
+      fail('License AAD 与当前设备码不一致。');
+    }
+
+    const plaintextBuffer = await crypto.subtle.decrypt(
+      {
+        name: 'AES-GCM',
+        iv: nonce,
+        additionalData: new TextEncoder().encode(aadText),
+        tagLength: 128
+      },
+      aesKey,
+      base64ToBytes(
+        license.payload_encryption.ciphertext_base64
+      )
+    );
+
+    const payloadText =
+      new TextDecoder().decode(plaintextBuffer);
+
+    const payload = JSON.parse(payloadText);
+
+    if (payload.type !== 'pm-knowledge-device-license') {
+      fail('License payload 类型不正确。');
+    }
+
+    if (payload.version !== 2) {
+      fail('License payload 版本不正确。');
+    }
+
+    if (payload.device_id !== record.deviceId) {
+      fail('License payload 设备码不匹配。');
+    }
+
+    if (
+      typeof payload.content_key !== 'string' ||
+      payload.content_key.length < 1
+    ) {
+      fail('License 中没有得到有效的知识库解密密钥。');
+    }
+
+    // 不显示 content_key，也不写入 localStorage / sessionStorage。
+    resultEl.innerHTML =
+      '<span class="ok">V2 设备授权解密成功。</span><br>' +
+      '已成功完成：Public License → 设备私钥 → RSA-OAEP → AES-256-GCM → 知识库解密密钥。<br>' +
+      '知识库解密密钥未在页面中显示。';
+
+  } catch (err) {
+    console.error(err);
+    resultEl.innerHTML =
+      '<span class="err">V2 设备授权解密失败。</span><br>' +
+      String(err?.message || err);
+  }
+})();
+</script>
+</body>
+</html>
