@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PM Knowledge - 设备身份测试</title>
+  <style>
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      margin:0;background:#f5f6f8;color:#1f2328
+    }
+    .wrap{max-width:760px;margin:48px auto;padding:0 20px}
+    .card{
+      background:#fff;border:1px solid #d0d7de;border-radius:12px;
+      padding:28px;box-shadow:0 6px 24px rgba(0,0,0,.06)
+    }
+    h1{margin-top:0;font-size:24px}
+    .muted{color:#656d76;line-height:1.7}
+    .status{margin:18px 0;padding:12px 14px;border-radius:8px;background:#f6f8fa}
+    .device{
+      font:700 26px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      letter-spacing:1px;margin:12px 0 18px;word-break:break-all
+    }
+    .label{font-weight:600;margin-top:18px}
+    textarea{
+      width:100%;box-sizing:border-box;min-height:130px;margin-top:8px;padding:10px;
+      border:1px solid #d0d7de;border-radius:8px;
+      font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      resize:vertical;background:#fff;color:#1f2328
+    }
+    button{
+      border:0;border-radius:8px;padding:10px 14px;font-weight:600;
+      cursor:pointer;margin:6px 8px 0 0
+    }
+    .primary{background:#1f883d;color:#fff}
+    .secondary{background:#eaeef2;color:#1f2328}
+    .danger{background:#cf222e;color:#fff}
+    .ok{color:#1a7f37;font-weight:700}
+    .err{color:#cf222e;font-weight:700}
+    .steps{margin-top:24px;line-height:1.7}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>PM Knowledge 设备身份测试</h1>
+      <p class="muted">
+        本页只测试浏览器设备身份，不读取 MAC 地址、硬盘序列号、CPU 序列号，
+        也不会修改正式知识库密码页。
+      </p>
+
+      <div id="status" class="status">正在初始化设备身份……</div>
+
+      <div class="label">设备码</div>
+      <div id="deviceId" class="device">—</div>
+      <button id="copyId" class="primary" disabled>复制设备码</button>
+
+      <div class="label">设备公钥</div>
+      <textarea id="publicKey" readonly></textarea>
+      <button id="copyKey" class="secondary" disabled>复制公钥</button>
+      <button id="reset" class="danger">重置本浏览器设备身份</button>
+
+      <div class="steps">
+        <strong>本轮只验证三件事：</strong>
+        <ol>
+          <li>第一次打开会生成设备码。</li>
+          <li>刷新或关闭后重新打开，设备码必须完全不变。</li>
+          <li>换另一个浏览器或浏览器用户配置后，设备码应不同。</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+<script>
+(() => {
+  'use strict';
+
+  const DB_NAME = 'pm-knowledge-device';
+  const DB_VERSION = 1;
+  const STORE_NAME = 'keys';
+  const RECORD_KEY = 'device-keypair-v1';
+
+  const statusEl = document.getElementById('status');
+  const deviceEl = document.getElementById('deviceId');
+  const publicKeyEl = document.getElementById('publicKey');
+  const copyIdBtn = document.getElementById('copyId');
+  const copyKeyBtn = document.getElementById('copyKey');
+  const resetBtn = document.getElementById('reset');
+
+  function bytesToBase64(buffer) {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+  }
+
+  function bytesToHex(buffer) {
+    return [...new Uint8Array(buffer)]
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  function formatDeviceId(hex) {
+    const s = hex.slice(0, 16).toUpperCase();
+    return `PM-${s.slice(0,4)}-${s.slice(4,8)}-${s.slice(8,12)}-${s.slice(12,16)}`;
+  }
+
+  function openDb() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME);
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function dbGet(key) {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const req = tx.objectStore(STORE_NAME).get(key);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+      tx.oncomplete = () => db.close();
+    });
+  }
+
+  async function dbPut(key, value) {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      tx.objectStore(STORE_NAME).put(value, key);
+      tx.oncomplete = () => { db.close(); resolve(); };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+    });
+  }
+
+  async function dbDelete(key) {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      tx.objectStore(STORE_NAME).delete(key);
+      tx.oncomplete = () => { db.close(); resolve(); };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+    });
+  }
+
+  async function createDevice() {
+    // 先生成可导出密钥对，只为了取得公钥和重新导入私钥。
+    const tempPair = await crypto.subtle.generateKey(
+      {
+        name: 'RSA-OAEP',
+        modulusLength: 2048,
+        publicExponent: new Uint8Array([1, 0, 1]),
+        hash: 'SHA-256'
+      },
+      true,
+      ['encrypt', 'decrypt']
+    );
+
+    // 公钥可以导出并发给管理员。
+    const publicSpki = await crypto.subtle.exportKey('spki', tempPair.publicKey);
+
+    // 私钥重新导入为不可导出 CryptoKey。
+    const privatePkcs8 = await crypto.subtle.exportKey('pkcs8', tempPair.privateKey);
+    const privateKey = await crypto.subtle.importKey(
+      'pkcs8',
+      privatePkcs8,
+      {
+        name: 'RSA-OAEP',
+        hash: 'SHA-256'
+      },
+      false,
+      ['decrypt']
+    );
+
+    const digest = await crypto.subtle.digest('SHA-256', publicSpki);
+
+    const record = {
+      version: 1,
+      createdAt: new Date().toISOString(),
+      privateKey,
+      publicKeySpkiBase64: bytesToBase64(publicSpki),
+      deviceId: formatDeviceId(bytesToHex(digest))
+    };
+
+    await dbPut(RECORD_KEY, record);
+    return record;
+  }
+
+  async function loadOrCreateDevice() {
+    if (!window.isSecureContext || !window.crypto?.subtle || !window.indexedDB) {
+      throw new Error('当前环境不支持安全设备密钥，请使用 HTTPS 下最新版 Chrome 或 Edge。');
+    }
+
+    let record = await dbGet(RECORD_KEY);
+
+    if (!record || !record.privateKey || !record.deviceId || !record.publicKeySpkiBase64) {
+      record = await createDevice();
+      statusEl.innerHTML =
+        '<span class="ok">已生成新的设备身份。</span> 私钥保存在当前浏览器 IndexedDB 中，且设置为不可导出。';
+    } else {
+      statusEl.innerHTML =
+        '<span class="ok">已读取现有设备身份。</span> 本次没有重新生成设备私钥。';
+    }
+
+    return record;
+  }
+
+  async function copyText(text, button) {
+    await navigator.clipboard.writeText(text);
+    const old = button.textContent;
+    button.textContent = '已复制';
+    setTimeout(() => { button.textContent = old; }, 1200);
+  }
+
+  async function init() {
+    try {
+      const record = await loadOrCreateDevice();
+      deviceEl.textContent = record.deviceId;
+      publicKeyEl.value = record.publicKeySpkiBase64;
+
+      copyIdBtn.disabled = false;
+      copyKeyBtn.disabled = false;
+
+      copyIdBtn.onclick = () => copyText(record.deviceId, copyIdBtn);
+      copyKeyBtn.onclick = () => copyText(record.publicKeySpkiBase64, copyKeyBtn);
+    } catch (err) {
+      console.error(err);
+      statusEl.innerHTML =
+        `<span class="err">初始化失败：</span>${String(err?.message || err)}`;
+    }
+  }
+
+  resetBtn.addEventListener('click', async () => {
+    const yes = confirm(
+      '确定重置吗？重置后会生成新的设备身份。未来正式授权后，这相当于换了一台设备。'
+    );
+    if (!yes) return;
+
+    await dbDelete(RECORD_KEY);
+    location.reload();
+  });
+
+  init();
+})();
+</script>
+</body>
+</html>
