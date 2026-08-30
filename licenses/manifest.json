@@ -1,9 +1,10 @@
 {
   "version": 2,
   "generator": "2.0-hybrid-rsa-aesgcm",
-  "generated_at": "2026-08-30T15:08:21.617009+00:00",
-  "active_device_count": 1,
+  "generated_at": "2026-08-30T15:19:07.985229+00:00",
+  "active_device_count": 2,
   "devices": [
-    "PM-9CC9-B957-123E-1028"
+    "PM-9CC9-B957-123E-1028",
+    "PM-CA77-D54B-0E1E-48B0"
   ]
 }
