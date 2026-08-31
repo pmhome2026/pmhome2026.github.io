@@ -1,0 +1,16 @@
+{
+  "license_version": 3,
+  "device_id": "PM-CA77-D54B-0E1E-48B0",
+  "key_wrap": {
+    "algorithm": "RSA-OAEP",
+    "hash": "SHA-256",
+    "wrapped_key_base64": "CQzIRel8INsY2inwaRpyGJF7j+LgPNGcCcgbrrm9sTZ4MjQ+xp4Lz1DbhAWQORZUSjIVIoSMgWRcE+O6D+2JsYayR8bqZKEzFoFh56nI9avtgvKX3nYUixaabXKp1VvK74eqgRvSb2vT4cNeiwClQBm9FUPMVPIqeJUnNtQdSIiHJzY3k3NK02WVD4hLeo8JW29Jju0wNdyD31z6/3sgeFh/HR+HtPmJQKWxhGIBJesWIm0qeV3ceY60lAt68sL/JUUzVJqBt/8TQurrTHimW3SKWAw/JqJM/Q5/9q3+H5ayn1NFi1IFptdqrJdyQVExxNk4cXPaVm8g5+HOhnZ7OA=="
+  },
+  "payload_encryption": {
+    "algorithm": "AES-GCM",
+    "key_bits": 256,
+    "nonce_base64": "EHk3HZX++nu0Lcrn",
+    "aad": "PM-CA77-D54B-0E1E-48B0|v3",
+    "ciphertext_base64": "0TStS+NHlDMPdGjEO0wWelIDAn6nH+jDtcY4wfXCiuAGFKzv5BRw3/Pils0asdNnk2UXQrfxjRrKT3h1eFX9Yp0eH+0RIwjXUajnhfMHZofRpdjpTwyaQf1j70hRcb1cFyIYSUeKtwh1P73H3T3K3QfZ/Qa5qDZhhu6+frUDYBdg1defVvildIBvs4iy6KJehxUX7c9KScUZ4XUHmVmHT99+93E5EfxU5uSQ0AKtZCopauVl3Rky2OomNxsNJSV/K/RlrdyvXKeXwCfz+hsxMSNWHRrfi/OALwBxXIsj+y5X5KCR82xCviaTKv0HJ3sZfXbjpwj2MHKEGSvjjRJXem7i7fS6/Tj1DkUxGMzuUxMbZh/vPfadSUAYOhp0hsZ0aCncu2EsFU9Cje66ZwgwrYZNk2+mOkmKjo1CDpbTrqvBWw1YL9RcWTScfFAkzXxw3HU48X8XZpXEMSnE+L8wRRVfo/a3PODca2TknTw0dPVM4IAdd8GmBdmpt3JI3BnxnCSZisPe9MqTj+R2OfemS7NhpMGenqz8WQRYC5N5o9mql4A2ssiCTiL7RRT/WG6HOJ/B1knSn9WjujTJXWUglNROjhntXd9fw6UC5b+i5q2v8ZbzfecKHR/EENy2B0Xl5gKsqbaTi1vt5CunQXzWsW6Dls17h7vozbFtb99+spCwmlof0jZe+kSJmvnZX4A4ZquWG7iPlKwqrdRa5fyzgXveoFsj4DdUABgb5O9FQQ1yzzO3SV1ypyyK2hJ/rBzJ4E9dXE2qXzr8suRvJFJW7DNfNRpmsPW5wjuSmtWFEBWWuiAZOhGlGmTuK+dr2lV8SaSeNkzuiiHtNbg2UiurT3DnpGQ/ww7LmIvXBU21FWHgZLc9c9P6O+uoqPEaOBrw0Kz5bTLFRKPV4cARPaBes/Q0HQYDVIaKmxH3VFbFXk7fcvGsbrszeItDplgtUV7LEllhOB/VwRvEKtGSg8wHzfZN0zLxuoiaEgiBtZeKNXzwwGtM0Tm+V9Jn0RdPeTvRGPFZlmrOO+C0vlSmEkIApaZiWP118YWv9aQAd5GjDydBsf1hl0RXHe89zGk3Uh+bj4GoNcuDdS3wjKJiNbzJZ8kmkUoLVw+66m45quZEvvposobqF3p2mbA="
+  }
+}

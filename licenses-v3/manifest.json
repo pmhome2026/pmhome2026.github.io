@@ -1,0 +1,17 @@
+{
+  "version": 3,
+  "generator": "3.0-resource-rsa-aesgcm",
+  "generated_at": "2026-08-31T14:16:20.389657+00:00",
+  "licensed_device_count": 2,
+  "licensed_devices": [
+    {
+      "device_id": "PM-9CC9-B957-123E-1028",
+      "resource_key_count": 3
+    },
+    {
+      "device_id": "PM-CA77-D54B-0E1E-48B0",
+      "resource_key_count": 3
+    }
+  ],
+  "skipped_devices": []
+}
