@@ -1,0 +1,51 @@
+{
+  "version": 3,
+  "devices": [
+    {
+      "device_id": "PM-9CC9-B957-123E-1028",
+      "public_key_spki_base64": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsqpXsOvp4tsRtoWI3rHdgDcS6k8BT2duu51z0HkMKiPbPH46xaVIE5zUCIVuEfnUYW40FbgjVZmKdRe1j9ni5HJtSMoiRCByD+W2sy/Qfwx83qikdNBpi0XsxclOs9VKGTI5MFZNqKRb94G2Obsz6KnUDLI+LF4HvFhS7roLzGZFehzxAtWwyutzv9yZe0d534PLA01Dvx+FPRERrmTudaZ7GckYWUtelfVX8zykR4CXIUrCcTRxOgoIdFyioDeHmTpjuQVz+qpXNicKTAg1mIQHN0qnqqVYBayo3u4xcCEyclAhwf3SgqUkCYllZW4I5zEm6DFsEW+xdwQEl3khfwIDAQAB",
+      "status": "active",
+      "label": "primary-device",
+      "plan": "legacy_full",
+      "allowed_groups": [
+        "general",
+        "tutorial",
+        "basic_data",
+        "daily_data",
+        "strategy",
+        "advanced_strategy",
+        "reports",
+        "source"
+      ],
+      "allowed_resources": [],
+      "denied_resources": [
+        "res_ac434fbb11d7f4c8"
+      ],
+      "expires_at": null,
+      "license_revision": 2
+    },
+    {
+      "device_id": "PM-CA77-D54B-0E1E-48B0",
+      "public_key_spki_base64": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxSV63giFfDs5N9BHO7tCmTWsktqWiEGn2ZCwXQu2HVly0X3AVQYjilz72LsNoMowjcPuaK+kk4w0EMl+AwdeV2NDAPtisuDs2Y6ylAYhWvzXrC6KKY/p2rSgi1nrcxDtqptEovtoGieUHgWbGYqZsjeb65gm1xoKNJWTTuwlO1zGq53o1B/kF+EsI+AWtPAm5YGu2G3Rfcg2m6EoWxuAJgSyEYza+3itMv+9Uxq9wtyQAdqfYLmaF5yeUwf41KvVzrlY5qn5AxfR22t2QltCg+ePtAdNzHymreF7DEW6eD9NL4UilaHwKPwLKjXvxDpHCNbILMBrcdUWuY/ulOU3qwIDAQAB",
+      "status": "active",
+      "label": "zxa",
+      "plan": "legacy_full",
+      "allowed_groups": [
+        "general",
+        "tutorial",
+        "basic_data",
+        "daily_data",
+        "strategy",
+        "advanced_strategy",
+        "reports",
+        "source"
+      ],
+      "allowed_resources": [],
+      "denied_resources": [
+        "res_ac434fbb11d7f4c8"
+      ],
+      "expires_at": null,
+      "license_revision": 2
+    }
+  ]
+}

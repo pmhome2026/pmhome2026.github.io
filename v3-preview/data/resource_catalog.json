@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "default_group": "general",
+  "resources": [
+    {
+      "resource_id": "res_81be1a7661d67cbe",
+      "source_file": "[中等层] 智能空调系统 v1 2026-08-18.docx",
+      "title": "[中等层] 智能空调系统 v1 2026-08-18",
+      "group": "general",
+      "enabled": true,
+      "key_version": 1
+    },
+    {
+      "resource_id": "res_305d475d134a125c",
+      "source_file": "启动信号事件收益_V4_0_2024-01-02_2026-06-30.xlsx",
+      "title": "启动信号事件收益_V4_0_2024-01-02_2026-06-30",
+      "group": "general",
+      "enabled": true,
+      "key_version": 1
+    },
+    {
+      "resource_id": "res_ac434fbb11d7f4c8",
+      "source_file": "启动信号事件收益_V4_0_2024-01-02_2026-06-30_V4优化前后对比.csv",
+      "title": "启动信号事件收益_V4_0_2024-01-02_2026-06-30_V4优化前后对比",
+      "group": "general",
+      "enabled": true,
+      "key_version": 1
+    }
+  ]
+}
