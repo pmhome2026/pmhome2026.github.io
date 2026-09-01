@@ -1,0 +1,68 @@
+body {
+
+    font-family:
+    Arial,
+    sans-serif;
+
+    background:#f5f6fa;
+
+    margin:0;
+
+}
+
+
+header {
+
+    background:#111827;
+
+    color:white;
+
+    padding:30px;
+
+}
+
+
+
+main {
+
+    padding:40px;
+
+}
+
+
+
+.card {
+
+    background:white;
+
+    padding:25px;
+
+    margin-bottom:20px;
+
+    border-radius:10px;
+
+}
+
+
+
+.ok {
+
+    color:green;
+
+    font-weight:bold;
+
+}
+
+
+
+a {
+
+    display:block;
+
+    margin:10px;
+
+    color:#2563eb;
+
+    text-decoration:none;
+
+}
