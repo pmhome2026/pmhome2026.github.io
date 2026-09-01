@@ -1,27 +1,44 @@
 document.addEventListener(
 "DOMContentLoaded",
-()=>{
+function(){
 
 
 console.log(
-"PM Knowledge Admin Loaded"
+"PM Knowledge Admin initialized"
 );
 
 
 
-const status={
-devices:12,
-resources:248,
-publish:3,
-users:8
-};
+fetch("../api/status.json")
+
+.then(
+response=>response.json()
+)
+
+.then(
+data=>{
 
 
 console.log(
-"System Status",
-status
+"System Status:",
+data
 );
 
+
+})
+
+
+.catch(
+error=>{
+
+
+console.error(
+"API loading failed",
+error
+);
+
+
+});
 
 
 });
