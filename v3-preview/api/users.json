@@ -1,0 +1,17 @@
+[
+    {
+        "username":"admin",
+        "role":"Administrator",
+        "status":"ACTIVE"
+    },
+    {
+        "username":"editor",
+        "role":"Editor",
+        "status":"ACTIVE"
+    },
+    {
+        "username":"reviewer",
+        "role":"Reviewer",
+        "status":"ACTIVE"
+    }
+]

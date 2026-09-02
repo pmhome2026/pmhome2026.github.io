@@ -1,0 +1,19 @@
+{
+    "name":
+    "PM Knowledge Portal",
+
+    "version":
+    "access-control-v3",
+
+    "admin":
+    true,
+
+    "security":
+    {
+        "authentication":
+        "RBAC",
+
+        "audit":
+        true
+    }
+}
