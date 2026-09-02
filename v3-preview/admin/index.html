@@ -152,7 +152,7 @@ READY
 设备数量
 </h3>
 
-<strong data-status-value="devices">
+<strong>
 12
 </strong>
 
@@ -171,7 +171,7 @@ READY
 知识资源
 </h3>
 
-<strong data-status-value="resources">
+<strong>
 248
 </strong>
 
@@ -209,7 +209,7 @@ READY
 用户权限
 </h3>
 
-<strong data-status-value="users">
+<strong>
 8
 </strong>
 
@@ -419,6 +419,24 @@ All Services READY
 
 <script src="./assets/admin.js"></script>
 
+
+
+<script>
+async function loadDashboard(){
+ try{
+  const r=await fetch("../api/status.json");
+  const s=await r.json();
+  const strongs=document.querySelectorAll(".overview-item strong");
+  if(strongs.length>=4){
+   strongs[0].textContent=s.devices ?? "-";
+   strongs[1].textContent=s.resources ?? "-";
+   strongs[2].textContent=s.publish_tasks ?? "-";
+   strongs[3].textContent=s.users ?? "-";
+  }
+ }catch(e){console.log("dashboard api unavailable",e);}
+}
+loadDashboard();
+</script>
 
 </body>
 
