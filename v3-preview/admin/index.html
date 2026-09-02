@@ -1,444 +1,79 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport" 
-content="width=device-width, initial-scale=1.0">
-
-<title>
-PM Knowledge Portal | Admin Console
-</title>
-
-
-<link rel="stylesheet" href="./assets/admin.css">
-
-
+<title>PM Knowledge Admin</title>
 </head>
-
-
 <body>
 
-
-<header class="admin-header">
-
-
-<div class="brand">
-
-<h1>
-PM Knowledge Admin
-</h1>
-
-
-<p>
-Hybrid HD Knowledge Portal Management
-</p>
-
-</div>
-
-
-
-<nav class="nav-menu">
-
-<a href="index.html">
-首页
-</a>
-
-
-<a href="devices.html">
-设备管理
-</a>
-
-
-<a href="resources.html">
-资源管理
-</a>
-
-
-<a href="publish.html">
-发布管理
-</a>
-
-
-</nav>
-
-
+<header>
+<h1>PM Knowledge Admin</h1>
+<p>Hybrid HD Knowledge Portal Management</p>
 </header>
 
+<section>
+<h2>系统状态</h2>
+<p>设备管理 <b>READY</b></p>
+<p>资源管理 <b>READY</b></p>
+<p>发布流水线 <b>READY</b></p>
+</section>
 
+<section>
+<h2>系统概览</h2>
 
+<p>设备数量</p>
+<h3 id="devices">-</h3>
+<p>在线设备 10 / 异常 2</p>
 
+<p>知识资源</p>
+<h3 id="resources">-</h3>
+<p>已发布资源 230</p>
 
-<main class="dashboard">
+<p>发布任务</p>
+<h3 id="tasks">-</h3>
+<p>运行中任务 1</p>
 
-
-
-<!-- 系统状态 -->
-
-<section class="card status-card">
-
-
-<h2>
-系统状态
-</h2>
-
-
-
-<div class="status-list">
-
-
-<p>
-设备管理
-
-<span class="ok">
-READY
-</span>
-
-</p>
-
-
-
-<p>
-资源管理
-
-<span class="ok">
-READY
-</span>
-
-</p>
-
-
-
-<p>
-发布流水线
-
-<span class="ok">
-READY
-</span>
-
-</p>
-
-
-
-</div>
-
+<p>用户权限</p>
+<h3 id="users">-</h3>
+<p>当前角色数量</p>
 
 </section>
 
+<section>
+<h2>管理入口</h2>
 
+<p><a href="devices.html">设备管理</a><br>
+查看设备状态、连接信息及运行情况</p>
 
+<p><a href="resources.html">资源管理</a><br>
+管理知识资源上传、编辑和分类</p>
 
+<p><a href="publish.html">发布管理</a><br>
+查看发布流程和版本状态</p>
 
-<!-- 数据概览 -->
-
-<section class="card">
-
-
-<h2>
-系统概览
-</h2>
-
-
-
-<div class="overview-grid">
-
-
-
-<div class="overview-item">
-
-<h3>
-设备数量
-</h3>
-
-<strong>
-12
-</strong>
-
-<p>
-在线设备 10 / 异常 2
-</p>
-
-</div>
-
-
-
-
-<div class="overview-item">
-
-<h3>
-知识资源
-</h3>
-
-<strong>
-248
-</strong>
-
-<p>
-已发布资源 230
-</p>
-
-</div>
-
-
-
-
-<div class="overview-item">
-
-<h3>
-发布任务
-</h3>
-
-<strong>
-3
-</strong>
-
-<p>
-运行中任务 1
-</p>
-
-</div>
-
-
-
-
-<div class="overview-item">
-
-<h3>
-用户权限
-</h3>
-
-<strong>
-8
-</strong>
-
-<p>
-当前角色数量
-</p>
-
-</div>
-
-
-
-</div>
-
+<p><a href="users.html">权限管理</a><br>
+用户角色及访问控制管理</p>
 
 </section>
 
-
-
-
-
-
-<!-- 管理入口 -->
-
-<section class="card">
-
-
-<h2>
-管理入口
-</h2>
-
-
-
-<div class="menu-grid">
-
-
-
-<a class="menu-card"
-href="devices.html">
-
-
-<h3>
-设备管理
-</h3>
-
-
-<p>
-查看设备状态、连接信息及运行情况
-</p>
-
-
-</a>
-
-
-
-
-
-<a class="menu-card"
-href="resources.html">
-
-
-<h3>
-资源管理
-</h3>
-
-
-<p>
-管理知识资源上传、编辑和分类
-</p>
-
-
-</a>
-
-
-
-
-
-
-<a class="menu-card"
-href="publish.html">
-
-
-<h3>
-发布管理
-</h3>
-
-
-<p>
-查看发布流程和版本状态
-</p>
-
-
-</a>
-
-
-
-
-
-
-<a class="menu-card"
-href="users.html">
-
-
-<h3>
-权限管理
-</h3>
-
-
-<p>
-用户角色及访问控制管理
-</p>
-
-
-</a>
-
-
-
-
-</div>
-
-
+<section>
+<h2>最近活动</h2>
+<p>09:30 发布知识资源：PM Device Guide v2.1</p>
+<p>09:12 新增设备：HD-Terminal-008</p>
+<p>08:55 更新权限：Admin Role Policy</p>
+<p>08:30 系统检查完成：All Services READY</p>
 </section>
-
-
-
-
-
-
-
-<!-- 最近活动 -->
-
-<section class="card">
-
-
-<h2>
-最近活动
-</h2>
-
-
-
-<ul class="activity-list">
-
-
-<li>
-
-09:30
-
-发布知识资源：
-
-PM Device Guide v2.1
-
-</li>
-
-
-
-<li>
-
-09:12
-
-新增设备：
-
-HD-Terminal-008
-
-</li>
-
-
-
-
-<li>
-
-08:55
-
-更新权限：
-
-Admin Role Policy
-
-</li>
-
-
-
-<li>
-
-08:30
-
-系统检查完成：
-
-All Services READY
-
-</li>
-
-
-
-</ul>
-
-
-
-</section>
-
-
-
-
-
-</main>
-
-
-
-
-
-<script src="./assets/admin.js"></script>
-
-
 
 <script>
-async function loadDashboard(){
- try{
-  const r=await fetch("../api/status.json");
-  const s=await r.json();
-  const strongs=document.querySelectorAll(".overview-item strong");
-  if(strongs.length>=4){
-   strongs[0].textContent=s.devices ?? "-";
-   strongs[1].textContent=s.resources ?? "-";
-   strongs[2].textContent=s.publish_tasks ?? "-";
-   strongs[3].textContent=s.users ?? "-";
-  }
- }catch(e){console.log("dashboard api unavailable",e);}
-}
-loadDashboard();
+fetch("../api/status.json")
+.then(r=>r.json())
+.then(data=>{
+ document.getElementById("devices").innerText=data.devices || 0;
+ document.getElementById("resources").innerText=data.resources || 0;
+ document.getElementById("tasks").innerText=data.publish_tasks || 0;
+ document.getElementById("users").innerText=data.users || 0;
+});
 </script>
 
 </body>
-
-
 </html>
