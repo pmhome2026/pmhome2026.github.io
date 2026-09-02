@@ -1,0 +1,22 @@
+[
+    {
+        "role": "Administrator",
+        "permission": "ALL",
+        "status": "ACTIVE"
+    },
+    {
+        "role": "Editor",
+        "permission": "RESOURCE_EDIT",
+        "status": "ACTIVE"
+    },
+    {
+        "role": "Reviewer",
+        "permission": "APPROVE",
+        "status": "ACTIVE"
+    },
+    {
+        "role": "Device User",
+        "permission": "DEVICE_ACCESS",
+        "status": "ACTIVE"
+    }
+]
