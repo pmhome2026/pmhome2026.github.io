@@ -16,7 +16,7 @@
     },
     {
         "role": "Device User",
-        "permission": "DEVICE_ACCESS",
+        "permission": "DEVICE_VIEW",
         "status": "ACTIVE"
     }
 ]

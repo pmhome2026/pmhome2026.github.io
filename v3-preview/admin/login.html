@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>PM Knowledge Login</title>
+</head>
+<body>
+<h1>PM Knowledge Portal Login</h1>
+<p>账号：</p>
+<input id="user">
+<p>密码：</p>
+<input id="password" type="password">
+<button onclick="login()">登录</button>
+
+<script src="assets/auth.js"></script>
+<script>
+function login(){
+    const user=document.getElementById("user").value;
+    if(user){
+        localStorage.setItem("pm_user", user);
+        location.href="index.html";
+    }
+}
+</script>
+</body>
+</html>
