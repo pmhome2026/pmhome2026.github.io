@@ -1,167 +1,50 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
-
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
-
-
-<title>
-操作日志
-</title>
-
-
-<link rel="stylesheet"
-href="./assets/admin.css">
-
-
+<title>操作日志</title>
+<link rel="stylesheet" href="assets/admin.css">
 </head>
-
-
-
 <body>
 
-
 <header>
-
-<h1>
-操作日志
-</h1>
-
-
-<p>
-Security Audit Trail
-</p>
-
-
+<h1>操作日志</h1>
+<p>Security Audit Trail</p>
 </header>
 
-
-
 <main>
-
-
 <div class="card">
-
-
-<h2>
-最近操作
-</h2>
-
-
-
+<h2>最近操作</h2>
 <table>
-
-
+<thead>
 <tr>
-
-<th>
-时间
-</th>
-
-
-<th>
-操作
-</th>
-
-
-<th>
-用户
-</th>
-
-
-<th>
-结果
-</th>
-
-
+<th>时间</th>
+<th>操作</th>
+<th>用户</th>
+<th>结果</th>
 </tr>
-
-
-
-<tr>
-
-<td>
-09:30
-</td>
-
-<td>
-publish resource
-</td>
-
-<td>
-admin
-</td>
-
-<td>
-SUCCESS
-</td>
-
-</tr>
-
-
-
-
-<tr>
-
-<td>
-09:20
-</td>
-
-<td>
-approve device
-</td>
-
-<td>
-admin
-</td>
-
-<td>
-SUCCESS
-</td>
-
-</tr>
-
-
-
-
-<tr>
-
-<td>
-08:50
-</td>
-
-<td>
-disable device
-</td>
-
-<td>
-security
-</td>
-
-<td>
-SUCCESS
-</td>
-
-</tr>
-
-
+</thead>
+<tbody id="log-list">
+<tr><td colspan="4">Loading...</td></tr>
+</tbody>
 </table>
-
-
 </div>
-
-
 </main>
 
-
+<script>
+fetch("../api/logs.json")
+.then(r=>r.json())
+.then(data=>{
+document.getElementById("log-list").innerHTML=data.map(log=>`
+<tr>
+<td>${log.time}</td>
+<td>${log.action}</td>
+<td>${log.user}</td>
+<td>${log.result}</td>
+</tr>
+`).join("");
+});
+</script>
 
 </body>
-
-
 </html>
