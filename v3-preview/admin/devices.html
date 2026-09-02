@@ -1,39 +1,92 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Device Management V3</title>
 <link rel="stylesheet" href="assets/admin.css">
 </head>
+
 <body>
+
 <header>
 <h1>Device Management V3</h1>
 </header>
+
 <main>
-<section class="card">
+<div class="card">
+
 <h2>Authorized Devices</h2>
-<div id="device-list">Loading...</div>
-</section>
+
+<div id="device-list">
+Loading...
+</div>
+
+</div>
 </main>
-<script src="assets/admin.js"></script>
+
+
 <script>
-document.addEventListener("DOMContentLoaded",()=>{
- fetch("../api/devices.json")
- .then(r=>r.json())
- .then(data=>{
-   const list=document.getElementById("device-list");
-   const devices=Array.isArray(data)?data:(data.devices||[]);
-   if(!devices.length){list.innerHTML="<p>No devices found</p>";return;}
-   list.innerHTML=devices.map(d=>`
-    <div class="card">
-      <p><b>${d.id||d.device_id||"UNKNOWN"}</b></p>
-      <p>Status: ${d.status||"unknown"}</p>
-      <p>Plan: ${d.plan||"unknown"}</p>
-    </div>`).join("");
- })
- .catch(e=>document.getElementById("device-list").innerHTML="API loading failed");
-});
+async function loadDevices(){
+
+    const container = document.getElementById("device-list");
+
+    try{
+
+        const response = await fetch("../api/devices.json");
+
+        if(!response.ok){
+            throw new Error("API unavailable");
+        }
+
+        const devices = await response.json();
+
+        if(!Array.isArray(devices) || devices.length===0){
+            container.innerHTML="<p>No authorized devices</p>";
+            return;
+        }
+
+
+        container.innerHTML = devices.map(device => {
+
+            return `
+            <div class="device-item">
+
+                <h3>${device.device_id || device.id || "UNKNOWN"}</h3>
+
+                <p>
+                Status:
+                ${device.status || "UNKNOWN"}
+                </p>
+
+                <p>
+                Plan:
+                ${device.plan || device.package || device.subscription || "legacy_full"}
+                </p>
+
+                <p>
+                License:
+                ${device.license || "ACTIVE"}
+                </p>
+
+            </div>
+            `;
+
+        }).join("");
+
+    }catch(error){
+
+        container.innerHTML =
+        "<p>Failed to load device information</p>";
+
+        console.error(error);
+
+    }
+
+}
+
+loadDevices();
+
 </script>
+
 </body>
 </html>
