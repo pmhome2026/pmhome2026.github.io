@@ -1,15 +1,7 @@
 [
     {
-        "id":"DOC001",
-        "name":"PM Device Guide",
-        "version":"2.1",
-        "status":"PUBLISHED"
-    },
-
-    {
-        "id":"DOC002",
-        "name":"Knowledge Base",
-        "version":"1.0",
-        "status":"DRAFT"
+        "resource_id": "DOC001",
+        "name": "PM Knowledge Resource",
+        "status": "PUBLISHED"
     }
 ]

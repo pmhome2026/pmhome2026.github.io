@@ -2,7 +2,6 @@
     "system": "READY",
     "devices": 12,
     "resources": 248,
-    "publish_tasks": 3,
     "users": 8,
-    "version": "access-control-v3"
+    "publish_tasks": 3
 }

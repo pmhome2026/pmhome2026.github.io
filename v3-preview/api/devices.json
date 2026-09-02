@@ -1,13 +1,6 @@
 [
     {
-        "device_id":"HD-Terminal-001",
-        "owner":"PM",
-        "status":"ONLINE"
-    },
-
-    {
-        "device_id":"HD-Terminal-002",
-        "owner":"PM",
-        "status":"ONLINE"
+        "device_id": "HD-Terminal-001",
+        "status": "ONLINE"
     }
 ]
