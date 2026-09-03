@@ -1,44 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>Access Logs</title>
-<link rel="stylesheet" href="assets/admin.css">
-</head>
+<head><meta charset="UTF-8"><title>Access Logs</title><link rel="stylesheet" href="assets/admin.css"></head>
 <body>
-<header>
-<h1>资源访问日志</h1>
-<p>Access Control Audit</p>
-</header>
-
-<div class="card">
-<table>
-<thead>
-<tr>
-<th>用户</th>
-<th>资源</th>
-<th>设备</th>
-<th>结果</th>
-<th>时间</th>
-</tr>
-</thead>
-<tbody id="logs"></tbody>
-</table>
-</div>
-
-<script>
-fetch("../api/access_logs.json")
-.then(r=>r.json())
-.then(data=>{
- document.getElementById("logs").innerHTML=data.map(x=>`
-<tr>
-<td>${x.user}</td>
-<td>${x.resource}</td>
-<td>${x.device}</td>
-<td>${x.result}</td>
-<td>${x.time}</td>
-</tr>`).join("");
-});
-</script>
-</body>
-</html>
+<header><h1>资源访问日志</h1></header>
+<div class="card">访问日志来源: api/access_logs.json</div>
+</body></html>
