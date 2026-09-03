@@ -1,1 +1,43 @@
-<!doctype html><html><body><h2>客户注册</h2><input id="u" placeholder="用户名"><input id="c" placeholder="公司"><button onclick="register()">提交</button><script>function register(){let a=JSON.parse(localStorage.users||'[]');a.push({username:u.value,company:c.value,role:'Customer',status:'PENDING'});localStorage.users=JSON.stringify(a);alert('注册成功，请联系管理员审核');}</script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>注册账号</title></head>
+<body>
+<h2>注册账号</h2>
+
+<input id="phone" placeholder="手机号"><br>
+<input id="email" placeholder="邮箱（可选）"><br>
+<input id="password" type="password" placeholder="密码"><br>
+<input id="confirm" type="password" placeholder="确认密码"><br>
+
+<button onclick="register()">注册</button>
+
+<p>已有账号？<a href="login.html">立即登录</a></p>
+<p>忘记密码？<a href="reset_password.html">找回密码</a></p>
+
+<script>
+function register(){
+ if(!phone.value || !password.value){
+   alert("请输入手机号和密码");
+   return;
+ }
+ if(password.value!==confirm.value){
+   alert("两次密码不一致");
+   return;
+ }
+
+ let users=JSON.parse(localStorage.users||"[]");
+ users.push({
+   user_id:"U"+Date.now(),
+   phone:phone.value,
+   email:email.value,
+   password:password.value,
+   role:"Customer",
+   status:"ACTIVE"
+ });
+ localStorage.users=JSON.stringify(users);
+ alert("注册成功，请登录");
+ location.href="login.html";
+}
+</script>
+</body>
+</html>
