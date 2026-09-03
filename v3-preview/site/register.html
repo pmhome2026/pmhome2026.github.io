@@ -6,8 +6,37 @@
 
 <input id="phone" placeholder="手机号"><br>
 <input id="email" placeholder="邮箱（可选）"><br>
-<input id="password" type="password" placeholder="密码"><br>
-<input id="confirm" type="password" placeholder="确认密码"><br>
+<style>
+.password-box{
+    position:relative;
+    width:260px;
+    margin-bottom:8px;
+}
+.password-box input{
+    width:220px;
+    height:30px;
+    padding-right:35px;
+}
+.eye-btn{
+    position:absolute;
+    right:5px;
+    top:3px;
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+}
+</style>
+
+<div class="password-box">
+    <input id="password" type="password" placeholder="密码">
+    <button type="button" class="eye-btn" onclick="togglePassword('password', this)">👁</button>
+</div>
+
+<div class="password-box">
+    <input id="confirm" type="password" placeholder="确认密码">
+    <button type="button" class="eye-btn" onclick="togglePassword('confirm', this)">👁</button>
+</div>
 
 <button onclick="register()">注册</button>
 
@@ -15,6 +44,18 @@
 <p>忘记密码？<a href="reset_password.html">找回密码</a></p>
 
 <script>
+function togglePassword(id, button){
+  const input=document.getElementById(id);
+
+  if(input.type==="password"){
+    input.type="text";
+    button.innerHTML="🙈";
+  }else{
+    input.type="password";
+    button.innerHTML="👁";
+  }
+}
+
 function register(){
  if(!phone.value || !password.value){
    alert("请输入手机号和密码");
