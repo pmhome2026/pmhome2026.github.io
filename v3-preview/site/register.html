@@ -1,0 +1,1 @@
+<!doctype html><html><body><h2>客户注册</h2><input id="u" placeholder="用户名"><input id="c" placeholder="公司"><button onclick="register()">提交</button><script>function register(){let a=JSON.parse(localStorage.users||'[]');a.push({username:u.value,company:c.value,role:'Customer',status:'PENDING'});localStorage.users=JSON.stringify(a);alert('注册成功，请联系管理员审核');}</script></body></html>
