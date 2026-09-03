@@ -1,0 +1,1 @@
+<!doctype html><html><body><h2>访问申请审批</h2><div id="list"></div><script>let a=JSON.parse(localStorage.requests||'[]');list.innerHTML=a.map((x,i)=>x.user+' '+x.resource+' <button onclick="ok('+i+')">批准</button>').join('<br>');function ok(i){a[i].status='APPROVED';localStorage.requests=JSON.stringify(a);alert('已批准');location.reload();}</script></body></html>
