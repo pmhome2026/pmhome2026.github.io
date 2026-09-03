@@ -4,11 +4,43 @@
 <meta charset="utf-8">
 <title>注册账号</title>
 <style>
-.password-box{position:relative;width:260px;margin-bottom:8px;}
-.password-box input{width:220px;height:30px;padding-right:35px;box-sizing:border-box;}
-.eye-btn{position:absolute;right:5px;top:3px;width:28px;height:28px;border:none;background:none;cursor:pointer;font-size:18px;}
+body{
+    font-family: Arial,"Microsoft YaHei",sans-serif;
+}
+.password-box{
+    position:relative;
+    width:260px;
+    margin-bottom:8px;
+}
+.password-box input{
+    width:260px;
+    height:34px;
+    padding-right:40px;
+    box-sizing:border-box;
+}
+.eye-btn{
+    position:absolute;
+    right:8px;
+    top:5px;
+    width:26px;
+    height:26px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    display:none;
+    font-size:16px;
+    padding:0;
+}
+.password-box:hover .eye-btn,
+.password-box:focus-within .eye-btn{
+    display:block;
+}
+.eye-btn:hover{
+    opacity:0.7;
+}
 </style>
 </head>
+
 <body>
 
 <h2>注册账号</h2>
@@ -17,23 +49,17 @@
 <input id="email" placeholder="邮箱（可选）"><br>
 
 <div class="password-box">
-<input id="password" type="password" placeholder="密码" autocomplete="new-password">
-<button type="button" class="eye-btn"
-onmousedown="showPassword('password')"
-onmouseup="hidePassword('password')"
-onmouseleave="hidePassword('password')"
-ontouchstart="showPassword('password')"
-ontouchend="hidePassword('password')">👁</button>
+    <input id="password" type="password" placeholder="密码" autocomplete="new-password">
+    <button type="button" class="eye-btn"
+        onmousedown="togglePassword('password')"
+        ontouchstart="togglePassword('password')">👁</button>
 </div>
 
 <div class="password-box">
-<input id="confirm" type="password" placeholder="确认密码" autocomplete="new-password">
-<button type="button" class="eye-btn"
-onmousedown="showPassword('confirm')"
-onmouseup="hidePassword('confirm')"
-onmouseleave="hidePassword('confirm')"
-ontouchstart="showPassword('confirm')"
-ontouchend="hidePassword('confirm')">👁</button>
+    <input id="confirm" type="password" placeholder="确认密码" autocomplete="new-password">
+    <button type="button" class="eye-btn"
+        onmousedown="togglePassword('confirm')"
+        ontouchstart="togglePassword('confirm')">👁</button>
 </div>
 
 <button onclick="register()">注册</button>
@@ -41,47 +67,59 @@ ontouchend="hidePassword('confirm')">👁</button>
 <p>已有账号？<a href="login.html">立即登录</a></p>
 <p>忘记密码？<a href="reset_password.html">找回密码</a></p>
 
+
 <script>
-function showPassword(id){
- document.getElementById(id).type="text";
+
+function togglePassword(id){
+    const input=document.getElementById(id);
+    if(input.type==="password"){
+        input.type="text";
+    }else{
+        input.type="password";
+    }
 }
 
-function hidePassword(id){
- document.getElementById(id).type="password";
-}
 
 function register(){
- const phoneValue=document.getElementById("phone").value.trim();
- const emailValue=document.getElementById("email").value.trim();
- const passwordValue=document.getElementById("password").value.trim();
- const confirmValue=document.getElementById("confirm").value.trim();
 
- if(!phoneValue || !passwordValue){
-  alert("请输入手机号和密码");
-  return;
- }
+    const phoneValue=document.getElementById("phone").value.trim();
+    const emailValue=document.getElementById("email").value.trim();
+    const passwordValue=document.getElementById("password").value.trim();
+    const confirmValue=document.getElementById("confirm").value.trim();
 
- if(passwordValue!==confirmValue){
-  alert("两次密码不一致");
-  return;
- }
 
- let users=JSON.parse(localStorage.users||"[]");
+    if(!phoneValue || !passwordValue){
+        alert("请输入手机号和密码");
+        return;
+    }
 
- users.push({
-  user_id:"U"+Date.now(),
-  phone:phoneValue,
-  email:emailValue,
-  password:passwordValue,
-  role:"Customer",
-  status:"ACTIVE"
- });
 
- localStorage.users=JSON.stringify(users);
+    if(passwordValue!==confirmValue){
+        alert("两次密码不一致");
+        return;
+    }
 
- alert("注册成功，请登录");
- location.href="login.html";
+
+    let users=JSON.parse(localStorage.users||"[]");
+
+
+    users.push({
+        user_id:"U"+Date.now(),
+        phone:phoneValue,
+        email:emailValue,
+        password:passwordValue,
+        role:"Customer",
+        status:"ACTIVE"
+    });
+
+
+    localStorage.users=JSON.stringify(users);
+
+
+    alert("注册成功，请登录");
+    location.href="login.html";
 }
+
 </script>
 
 </body>
