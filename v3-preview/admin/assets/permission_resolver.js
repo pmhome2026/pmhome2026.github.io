@@ -1,31 +1,39 @@
 /*
-V4 Permission Resolver
+ V4 Access Permission Resolver
 */
 
-function checkAccess(context){
+function resolvePermission(context){
 
     if(!context.deviceAllowed){
-        return false;
+        return {
+            allow:false,
+            reason:"DEVICE_NOT_AUTHORIZED"
+        };
     }
 
     if(!context.planAllowed){
-        return false;
+        return {
+            allow:false,
+            reason:"PLAN_DENIED"
+        };
     }
 
     if(!context.roleAllowed){
-        return false;
+        return {
+            allow:false,
+            reason:"ROLE_DENIED"
+        };
     }
 
     if(!context.resourceAllowed){
-        return false;
+        return {
+            allow:false,
+            reason:"RESOURCE_ACL_DENIED"
+        };
     }
 
-    return true;
-}
-
-function getAccessResult(context){
     return {
-        allowed: checkAccess(context),
-        reason: checkAccess(context) ? "ALLOW" : "DENY"
+        allow:true,
+        reason:"ALL_CHECK_PASS"
     };
 }
