@@ -71,11 +71,9 @@ body{
 
 </div>
 
-
 <script>
 
 function togglePassword(){
-
     const input=document.getElementById("password");
 
     if(input.type==="password"){
@@ -83,48 +81,62 @@ function togglePassword(){
     }else{
         input.type="password";
     }
-
 }
 
 
 function login(){
 
-    const account=
+    const account =
         document.getElementById("account").value.trim();
 
-    const password=
+    const password =
         document.getElementById("password").value.trim();
 
 
-    let users=
-        JSON.parse(localStorage.users || "[]");
+    // 兼容 localStorage.users 两种读取方式
+    let rawUsers = localStorage.getItem("users");
+
+    if(!rawUsers){
+        alert("暂无注册用户，请先注册");
+        return;
+    }
 
 
-    let u=users.find(x=>
+    let users=[];
+
+    try{
+        users = JSON.parse(rawUsers);
+    }catch(e){
+        alert("用户数据异常，请重新注册");
+        return;
+    }
+
+
+    const u = users.find(x =>
         (
-            x.phone===account ||
-            x.email===account
+            String(x.phone || "").trim() === account ||
+            String(x.email || "").trim() === account
         )
         &&
-        x.password===password
+        String(x.password || "").trim() === password
     );
 
 
     if(!u){
-
         alert("账号或密码错误");
         return;
-
     }
 
 
-    localStorage.session=
+    localStorage.setItem(
+        "session",
         JSON.stringify({
             user_id:u.user_id,
             phone:u.phone,
             email:u.email,
             role:u.role
-        });
+        })
+    );
 
 
     location.href="dashboard.html";
