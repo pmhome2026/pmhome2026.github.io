@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>PM Knowledge Admin</title>
+<style>
+body{
+    font-family:"Microsoft YaHei",Arial,sans-serif;
+    margin:30px;
+}
+section{
+    margin-bottom:25px;
+}
+</style>
 </head>
 <body>
 
@@ -23,19 +32,15 @@
 
 <p>设备数量</p>
 <h3 id="devices">-</h3>
-<p>在线设备 10 / 异常 2</p>
 
 <p>知识资源</p>
 <h3 id="resources">-</h3>
-<p>已发布资源 230</p>
 
 <p>发布任务</p>
 <h3 id="tasks">-</h3>
-<p>运行中任务 1</p>
 
 <p>用户权限</p>
 <h3 id="users">-</h3>
-<p>当前角色数量</p>
 
 </section>
 
@@ -64,15 +69,40 @@
 <p>08:30 系统检查完成：All Services READY</p>
 </section>
 
+
 <script>
+// 管理员权限校验
+const adminSession = JSON.parse(
+    localStorage.getItem("admin_session") || "null"
+);
+
+if(!adminSession || adminSession.role !== "Admin"){
+    alert("无管理员权限，请先登录");
+    location.href="login.html";
+}
+
+
+// 获取系统状态
 fetch("../api/status.json")
-.then(r=>r.json())
+.then(r=>{
+    if(!r.ok){
+        throw new Error("status api unavailable");
+    }
+    return r.json();
+})
 .then(data=>{
- document.getElementById("devices").innerText=data.devices || 0;
- document.getElementById("resources").innerText=data.resources || 0;
- document.getElementById("tasks").innerText=data.publish_tasks || 0;
- document.getElementById("users").innerText=data.users || 0;
+    document.getElementById("devices").innerText=data.devices || 0;
+    document.getElementById("resources").innerText=data.resources || 0;
+    document.getElementById("tasks").innerText=data.publish_tasks || 0;
+    document.getElementById("users").innerText=data.users || 0;
+})
+.catch(()=>{
+    document.getElementById("devices").innerText="0";
+    document.getElementById("resources").innerText="0";
+    document.getElementById("tasks").innerText="0";
+    document.getElementById("users").innerText="0";
 });
+
 </script>
 
 </body>
