@@ -9,15 +9,13 @@ function getAdminSession(){
 }
 
 function requireAdmin(){
-
     const admin=getAdminSession();
 
     if(
         !admin ||
-        admin.role!=="Admin" ||
-        admin.provider!=="github"
+        admin.role!=="Admin"
     ){
-        alert("无管理员权限，请使用 GitHub 登录");
+        alert("无管理员权限，请先登录");
         window.location.href="login.html";
         return false;
     }
