@@ -11,46 +11,38 @@
 <button id="loginBtn">登录</button>
 
 <script>
-/*
-当前站点为 GitHub Pages 静态站点。
-不再从前端 config 文件读取管理员密码，避免密码泄露。
-正式认证需接入后端 API。
-*/
-
-async function authenticateAdmin(username,password){
-
-    return {
-        success:false,
-        message:"管理员认证接口未配置，请接入后端认证服务"
-    };
-
-}
+const AUTH_API = "https://你的worker域名.workers.dev/admin/login";
 
 async function login(){
-
     const username=document.getElementById("username").value.trim();
     const password=document.getElementById("password").value.trim();
 
-    const result=await authenticateAdmin(username,password);
+    if(!username || !password){
+        alert("请输入账号和密码");
+        return;
+    }
 
-    if(result.success){
+    try{
+        const res=await fetch(AUTH_API,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({username,password})
+        });
 
-        localStorage.setItem(
-            "admin_session",
-            JSON.stringify(result.session)
-        );
+        const data=await res.json();
 
-        window.location.href="index.html";
-
-    }else{
-
-        alert(result.message);
-
+        if(data.success){
+            localStorage.setItem("admin_session",JSON.stringify(data.session));
+            location.href="index.html";
+        }else{
+            alert(data.message || "登录失败");
+        }
+    }catch(e){
+        alert("认证服务连接失败");
     }
 }
 
 document.getElementById("loginBtn").onclick=login;
 </script>
-
 </body>
 </html>
