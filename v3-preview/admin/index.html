@@ -72,9 +72,12 @@ section{
 
 <script>
 // 管理员权限校验
-const adminSession = JSON.parse(
-    localStorage.getItem("admin_session") || "null"
-);
+let adminSession=null;
+try{
+    adminSession=JSON.parse(localStorage.getItem("admin_session") || "null");
+}catch(e){
+    adminSession=null;
+}
 
 if(!adminSession || adminSession.role !== "Admin"){
     alert("无管理员权限，请先登录");
