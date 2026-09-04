@@ -84,7 +84,15 @@ function togglePassword(){
 }
 
 
-function login(){
+async function sha256(text){
+    const data = new TextEncoder().encode(text);
+    const hash = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(hash))
+        .map(b=>b.toString(16).padStart(2,"0"))
+        .join("");
+}
+
+async function login(){
 
     const account =
         document.getElementById("account").value.trim();
@@ -112,13 +120,15 @@ function login(){
     }
 
 
+    const passwordHash = await sha256(password);
+
     const u = users.find(x =>
         (
             String(x.phone || "").trim() === account ||
             String(x.email || "").trim() === account
         )
         &&
-        String(x.password || "").trim() === password
+        String(x.password || "").trim() === passwordHash
     );
 
 
