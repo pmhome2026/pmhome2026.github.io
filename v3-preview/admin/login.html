@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>GitHub 管理员登录</title>
+<title>管理员 GitHub 登录</title>
 </head>
 <body>
 <h2>管理员登录</h2>
-<p>使用 GitHub 账号授权登录管理员后台</p>
 
-<button id="githubLoginBtn">使用 GitHub 登录</button>
+<button id="githubLogin">使用 GitHub 登录</button>
 
 <script src="assets/github_auth_config.js"></script>
 <script src="assets/github_auth.js"></script>
 <script>
-document.getElementById("githubLoginBtn").onclick=function(){
-    startGithubLogin();
+document.getElementById("githubLogin").onclick = function(){
+    githubLogin();
 };
 </script>
+
 </body>
 </html>
