@@ -1,1 +1,24 @@
-<!doctype html><html><body><h2>用户中心</h2><p id="x"></p><a href="apply.html">申请资料权限</a><script>x.innerHTML='当前用户:'+JSON.parse(localStorage.session||'{}').user;</script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>用户中心</title>
+</head>
+<body>
+<h2>用户中心</h2>
+
+<p id="x"></p>
+
+<a href="apply.html">申请资料权限</a>
+
+<script>
+const session = JSON.parse(localStorage.getItem("session") || "{}");
+
+const user = session.user || session.email || session.phone || "";
+
+document.getElementById("x").innerHTML =
+    user ? "当前用户:" + user : "当前用户:未登录";
+</script>
+
+</body>
+</html>
