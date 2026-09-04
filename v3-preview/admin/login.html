@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>PM Knowledge Login</title>
-</head>
+<html>
+<head><meta charset="utf-8"><title>管理员登录</title></head>
 <body>
-<h1>PM Knowledge Portal Login</h1>
-<p>账号：</p>
-<input id="user">
-<p>密码：</p>
-<input id="password" type="password">
+<h2>管理员登录</h2>
+<input id="username" placeholder="管理员账号"><br>
+<input id="password" type="password" placeholder="管理员密码"><br>
 <button onclick="login()">登录</button>
-
-<script src="assets/auth.js"></script>
+<script src="../config/admin_config.js"></script>
 <script>
 function login(){
-    const user=document.getElementById("user").value;
-    if(user){
-        localStorage.setItem("pm_user", user);
-        location.href="index.html";
-    }
+ const u=username.value;
+ const p=password.value;
+ if(u===ADMIN_CONFIG.username && p===ADMIN_CONFIG.password){
+  localStorage.setItem("admin_session",JSON.stringify({
+   username:u,role:"Admin",loginTime:new Date().toISOString()
+  }));
+  location.href="index.html";
+ }else{
+  alert("管理员账号或密码错误");
+ }
 }
 </script>
 </body>
