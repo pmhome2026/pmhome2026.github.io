@@ -1,48 +1,94 @@
-function startGithubLogin(){
-    if(!window.GITHUB_ADMIN_CONFIG){
-        alert("GitHub认证配置不存在");
+async function startGithubDeviceLogin(){
+
+    const status=document.getElementById("status");
+
+    const clientId = window.GITHUB_ADMIN_CONFIG.clientId;
+
+    if(!clientId || clientId==="YOUR_GITHUB_OAUTH_CLIENT_ID"){
+        status.innerText="请先配置 GitHub Client ID";
         return;
     }
 
-    if(
-        GITHUB_ADMIN_CONFIG.clientId==="YOUR_GITHUB_CLIENT_ID"
-    ){
-        alert("请先配置GitHub OAuth Client ID");
-        return;
-    }
+    status.innerText="正在连接 GitHub...";
 
-    const redirect =
-        window.location.origin +
-        window.location.pathname;
-
-    const url =
-        "https://github.com/login/oauth/authorize" +
-        "?client_id=" + encodeURIComponent(GITHUB_ADMIN_CONFIG.clientId) +
-        "&redirect_uri=" + encodeURIComponent(redirect) +
-        "&scope=read:user";
-
-    window.location.href=url;
-}
-
-
-// OAuth回调处理
-async function handleGithubCallback(){
-    const params=new URLSearchParams(
-        window.location.search
+    const res = await fetch(
+        "https://github.com/login/device/code",
+        {
+            method:"POST",
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                client_id:clientId,
+                scope:"read:user"
+            })
+        }
     );
 
-    const code=params.get("code");
+    const data = await res.json();
 
-    if(!code){
+    if(!data.user_code){
+        status.innerText="GitHub Device Flow 初始化失败";
         return;
     }
 
-    // 注意：
-    // 纯GitHub Pages无法安全保存OAuth Client Secret。
-    // 此处只保留流程入口，正式换token需要后端。
     alert(
-      "已获得GitHub授权回调，但当前GitHub Pages无后端交换token能力。"
+        "请打开:\n"+
+        data.verification_uri+
+        "\n输入验证码:\n"+
+        data.user_code
     );
-}
 
-handleGithubCallback();
+    status.innerText="等待 GitHub 授权...";
+
+    const timer=setInterval(async()=>{
+
+        const tokenRes = await fetch(
+            "https://github.com/login/oauth/access_token",
+            {
+                method:"POST",
+                headers:{
+                    "Accept":"application/json",
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    client_id:clientId,
+                    device_code:data.device_code,
+                    grant_type:"urn:ietf:params:oauth:grant-type:device_code"
+                })
+            }
+        );
+
+        const token = await tokenRes.json();
+
+        if(token.access_token){
+
+            clearInterval(timer);
+
+            const userRes = await fetch(
+                "https://api.github.com/user",
+                {
+                    headers:{
+                        Authorization:"Bearer "+token.access_token
+                    }
+                }
+            );
+
+            const user = await userRes.json();
+
+            localStorage.setItem(
+                "github_admin_session",
+                JSON.stringify({
+                    login:user.login,
+                    id:user.id,
+                    time:Date.now()
+                })
+            );
+
+            window.location.href="index.html";
+        }
+
+    },5000);
+
+}
